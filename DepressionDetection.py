@@ -5,9 +5,35 @@ import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from textblob import TextBlob
 
-# Load the saved model
-depression_model = pickle.load(open('depression_model.sav', 'rb'))
-vectorizer = pickle.load(open('vectorizer.sav', 'rb'))
+import pickle
+import streamlit as st
+
+# Function to load the model
+def load_model(model_path):
+    try:
+        with open(model_path, 'rb') as file:
+            model = pickle.load(file)
+        return model
+    except FileNotFoundError as e:
+        st.error(f"Model file not found: {e}")
+        return None
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        return None
+
+# Load the saved depression model and vectorizer
+depression_model = 'depression_model.sav'
+vectorizer = 'vectorizer.sav'
+
+depression_model = load_model(depression_model_path)
+vectorizer = load_model(vectorizer_path)
+
+# Check if both were loaded successfully
+if depression_model is None or vectorizer is None:
+    st.error("One or more models failed to load. Please check the file paths.")
+else:
+    st.success("Models loaded successfully.")
+
 
 # Dashboard Title and Description with Icon and Logo
 st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
