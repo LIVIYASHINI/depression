@@ -6,12 +6,12 @@ from wordcloud import WordCloud
 from textblob import TextBlob
 
 # Load the saved model
-depression_model = pickle.load(open('C:/Users/EndUser/RESEARCH/depression_model.sav', 'rb'))
-vectorizer = pickle.load(open('C:/Users/EndUser/RESEARCH/vectorizer.sav', 'rb'))
+depression_model = pickle.load(open('depression_model.sav', 'rb'))
+vectorizer = pickle.load(open('vectorizer.sav', 'rb'))
 
 # Dashboard Title and Description with Icon and Logo
 st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
-st.image("C:/Users/EndUser/RESEARCH/logo.png", width=80)  
+st.image("logo.png", width=80)  
 st.title("Depression Detection Dashboard :blue_heart:")
 st.markdown(
     "This dashboard predicts depression based on social media posts and visualizes trends. "
