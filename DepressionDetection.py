@@ -1,12 +1,12 @@
-# First, set up the page configuration
-import streamlit as st
-st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
-
 import pickle
+import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from textblob import TextBlob
+
+# Set page config first
+st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
 
 # Function to load the model
 def load_model(model_path):
@@ -41,6 +41,7 @@ st.markdown(
     "This dashboard predicts depression based on social media posts and visualizes trends. "
     "It includes real-time and batch prediction, word cloud generation, and temporal trend analysis."
 )
+
 
 # Updated keywords
 depression_keywords = ["sad", "depressed", "hopeless", "down", "anxious", "crying", "empty", "worthless", "fatigue", "tired", "lost"]
