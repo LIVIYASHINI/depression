@@ -1,12 +1,12 @@
-import pickle
+# First, set up the page configuration
 import streamlit as st
+st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
+
+import pickle
 import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from textblob import TextBlob
-
-import pickle
-import streamlit as st
 
 # Function to load the model
 def load_model(model_path):
@@ -34,9 +34,7 @@ if depression_model is None or vectorizer is None:
 else:
     st.success("Models loaded successfully.")
 
-
 # Dashboard Title and Description with Icon and Logo
-st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
 st.image("logo.png", width=80)  
 st.title("Depression Detection Dashboard :blue_heart:")
 st.markdown(
