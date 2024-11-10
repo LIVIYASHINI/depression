@@ -212,4 +212,4 @@ else:
         """, unsafe_allow_html=True
     )
 
-st.sidebar.write("Created by EndUser - Nov 2024")
+st.sidebar.write("Created by Liviya - Nov 2024")
