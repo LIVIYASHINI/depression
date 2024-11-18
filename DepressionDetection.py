@@ -22,7 +22,7 @@ def load_model(model_path):
         return None
 
 # Load the saved depression model and vectorizer
-depression_model_path = 'depression_model.sav'
+depression_model_path = 'depression_model_rf.sav'
 vectorizer_path = 'vectorizer.sav'
 
 depression_model = load_model(depression_model_path)
