@@ -6,9 +6,30 @@ from wordcloud import WordCloud
 from textblob import TextBlob
 import re
 
+# Function to load the model
+def load_model(model_path):
+    try:
+        with open(model_path, 'rb') as file:
+            model = pickle.load(file)
+        return model
+    except FileNotFoundError as e:
+        st.error(f"Model file not found: {e}")
+        return None
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        return None
+
 # Load the saved model
-depression_model = pickle.load(open('C:/Users/EndUser/RESEARCH/depression_model_rf.sav', 'rb'))
-vectorizer = pickle.load(open('C:/Users/EndUser/RESEARCH/vectorizer.sav', 'rb'))
+model_path = 'depression_model_rf.sav'
+with open(model_path, 'rb') as file:
+    depression_model = pickle.load(file)
+
+# Function to predict depression
+def predict_diabetes(data):
+    prediction = depression_model.predict(data)
+    return prediction
+
+
 
 # Dashboard Title and Description with Icon and Logo
 st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
