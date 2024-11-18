@@ -4,48 +4,30 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from textblob import TextBlob
+import re
 
-# Set page config first
-st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
-
-# Function to load the model
-def load_model(model_path):
-    try:
-        with open(model_path, 'rb') as file:
-            model = pickle.load(file)
-        return model
-    except FileNotFoundError as e:
-        st.error(f"Model file not found: {e}")
-        return None
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-        return None
-
-# Load the saved depression model and vectorizer
-depression_model_path = 'depression_model_rf.sav'
-vectorizer_path = 'vectorizer.sav'
-
-depression_model = load_model(depression_model_path)
-vectorizer = load_model(vectorizer_path)
-
-# Check if both were loaded successfully
-if depression_model is None or vectorizer is None:
-    st.error("One or more models failed to load. Please check the file paths.")
-else:
-    st.success("Models loaded successfully.")
+# Load the saved model
+depression_model = pickle.load(open('C:/Users/EndUser/RESEARCH/depression_model_rf.sav', 'rb'))
+vectorizer = pickle.load(open('C:/Users/EndUser/RESEARCH/vectorizer.sav', 'rb'))
 
 # Dashboard Title and Description with Icon and Logo
-st.image("logo.png", width=80)  
+st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
+st.image("C:/Users/EndUser/RESEARCH/logo.png", width=80)
 st.title("Depression Detection Dashboard :blue_heart:")
 st.markdown(
     "This dashboard predicts depression based on social media posts and visualizes trends. "
     "It includes real-time and batch prediction, word cloud generation, and temporal trend analysis."
 )
 
-
 # Updated keywords
 depression_keywords = ["sad", "depressed", "hopeless", "down", "anxious", "crying", "empty", "worthless", "fatigue", "tired", "lost"]
 non_depression_keywords = ["happy", "excited", "love", "great", "joyful", "content", "hopeful", "peaceful", "energized"]
+
+def preprocess_text(text):
+    """Preprocess text by removing URLs and unwanted characters."""
+    text = re.sub(r"http\S+|www\S+|https\S+", "", text, flags=re.MULTILINE)  # Remove URLs
+    text = re.sub(r"[^a-zA-Z\s]", "", text)  # Remove non-alphabetic characters
+    return text.lower().strip()
 
 def enhanced_prediction(text):
     text = text.lower()
@@ -83,6 +65,7 @@ uploaded_file = st.file_uploader("Upload a CSV file with a column 'post_text'", 
 if uploaded_file:
     data = pd.read_csv(uploaded_file)
     if 'post_text' in data.columns:
+        data['post_text'] = data['post_text'].apply(preprocess_text)  # Preprocess text
         data['prediction'] = data['post_text'].apply(enhanced_prediction)
         st.write("Predictions:")
         st.write(data[['post_text', 'prediction']].replace({1: "Depressed", 0: "Not Depressed"}))
@@ -212,4 +195,4 @@ else:
         """, unsafe_allow_html=True
     )
 
-st.sidebar.write("Created by Liviya - Nov 2024")
+st.sidebar.write("Created by EndUser - Nov 2024")
