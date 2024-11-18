@@ -6,6 +6,8 @@ from wordcloud import WordCloud
 from textblob import TextBlob
 import re
 
+# Set page config first
+st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
 # Function to load the model
 def load_model(model_path):
     try:
@@ -18,22 +20,20 @@ def load_model(model_path):
     except Exception as e:
         st.error(f"Error loading model: {e}")
         return None
-
-# Load the saved model
-model_path = 'depression_model_rf.sav'
-with open(model_path, 'rb') as file:
-    depression_model = pickle.load(file)
-
-# Function to predict depression
-def predict_diabetes(data):
-    prediction = depression_model.predict(data)
-    return prediction
-
-
+# Load the saved depression model and vectorizer
+depression_model_path = 'depression_model_rf.sav'
+vectorizer_path = 'vectorizer.sav'
+depression_model = load_model(depression_model_path)
+vectorizer = load_model(vectorizer_path)
+# Check if both were loaded successfully
+if depression_model is None or vectorizer is None:
+    st.error("One or more models failed to load. Please check the file paths.")
+else:
+    st.success("Models loaded successfully.")
 
 # Dashboard Title and Description with Icon and Logo
 st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
-st.image("C:/Users/EndUser/RESEARCH/logo.png", width=80)
+st.image("logo.png", width=80)
 st.title("Depression Detection Dashboard :blue_heart:")
 st.markdown(
     "This dashboard predicts depression based on social media posts and visualizes trends. "
