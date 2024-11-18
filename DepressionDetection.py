@@ -32,7 +32,6 @@ else:
     st.success("Models loaded successfully.")
 
 # Dashboard Title and Description with Icon and Logo
-st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
 st.image("logo.png", width=80)
 st.title("Depression Detection Dashboard :blue_heart:")
 st.markdown(
