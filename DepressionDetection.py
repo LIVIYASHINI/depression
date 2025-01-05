@@ -7,6 +7,9 @@ from textblob import TextBlob
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import re
 
+# Initialize the analyzer
+analyzer = SentimentIntensityAnalyzer()
+
 # Set page config first
 st.set_page_config(page_title="Depression Detection Dashboard", page_icon=":blue_heart:", layout="wide")
 # Function to load the model
