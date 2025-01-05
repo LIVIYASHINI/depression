@@ -119,7 +119,7 @@ uploaded_trend_file = st.file_uploader("Upload a CSV file with 'month_year' and 
 if uploaded_trend_file:
     trend_data = pd.read_csv(uploaded_trend_file, parse_dates=['month_year'])
     trend_data['month'] = trend_data['month_year'].dt.to_period('M')
-    monthly_counts = trend_data.groupby(['month', 'label_text']).size().unstack().fillna(0)
+    monthly_counts = trend_data.groupby(['month', 'post_text']).size().unstack().fillna(0)
     monthly_counts.columns = ['Not Depressed', 'Depressed']
     st.line_chart(monthly_counts)
 
