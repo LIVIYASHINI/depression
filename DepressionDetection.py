@@ -117,11 +117,28 @@ st.header("4. Depression Trend Analysis Over Time :chart_with_upwards_trend:")
 uploaded_trend_file = st.file_uploader("Upload a CSV file with 'month_year' and 'prediction' columns for trend analysis", type="csv")
 
 if uploaded_trend_file:
+    # Read the uploaded file
     trend_data = pd.read_csv(uploaded_trend_file, parse_dates=['month_year'])
+
+    # Extract the month (period) for grouping
     trend_data['month'] = trend_data['month_year'].dt.to_period('M')
-    monthly_counts = trend_data.groupby(['month', 'post_text']).size().unstack().fillna(0)
-    monthly_counts.columns = ['Not Depressed', 'Depressed']
-    st.line_chart(monthly_counts)
+
+    # Check if 'prediction' column exists
+    if 'prediction' not in trend_data.columns:
+        st.error("The uploaded file must contain a 'prediction' column with values like 'Depressed' or 'Not Depressed'.")
+    else:
+        # Group data by month and prediction
+        monthly_counts = trend_data.groupby(['month', 'prediction']).size().unstack(fill_value=0)
+
+        # Validate the number of columns before renaming
+        if monthly_counts.shape[1] == 2:
+            monthly_counts.columns = ['Not Depressed', 'Depressed']
+        else:
+            st.error("The grouped data does not have exactly two categories. Check your 'prediction' column values.")
+        
+        # Display the line chart
+        st.line_chart(monthly_counts)
+
 
 # Style and Layout
 st.sidebar.header("Settings :gear:")
