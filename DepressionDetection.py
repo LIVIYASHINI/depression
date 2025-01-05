@@ -113,7 +113,6 @@ if st.button("Generate Word Cloud", use_container_width=True):
     st.pyplot(plt)
 
 # Monthly Trend Analysis
-# Monthly Trend Analysis
 st.header("4. Depression Trend Analysis Over Time :chart_with_upwards_trend:")
 
 uploaded_trend_file = st.file_uploader("Upload a CSV file with 'month_year' and 'prediction' columns for trend analysis", type="csv")
@@ -122,20 +121,14 @@ if uploaded_trend_file:
     # Read the uploaded CSV file
     trend_data = pd.read_csv(uploaded_trend_file)
 
-    # Convert 'month_year' to datetime format if it's not already
-    trend_data['month_year'] = pd.to_datetime(trend_data['month_year'], format='%Y-%m', errors='coerce')
-
-    # Drop rows where 'month_year' is invalid
-    trend_data = trend_data.dropna(subset=['month_year'])
-
-    # Extract month period from 'month_year' column
-    trend_data['month'] = trend_data['month_year'].dt.to_period('M')
+    # Ensure 'month_year' is a string column in the format 'YYYY-MM'
+    trend_data['month_year'] = trend_data['month_year'].astype(str)
 
     # If prediction is numeric (0 or 1), map to 'Not Depressed' and 'Depressed'
     trend_data['prediction'] = trend_data['prediction'].map({0: 'Not Depressed', 1: 'Depressed'})
 
-    # Group by 'month' and 'prediction', then count occurrences
-    monthly_counts = trend_data.groupby(['month', 'prediction']).size().unstack(fill_value=0)
+    # Group by 'month_year' and 'prediction', then count occurrences
+    monthly_counts = trend_data.groupby(['month_year', 'prediction']).size().unstack(fill_value=0)
 
     # Plot the trend using Streamlit's line chart
     st.line_chart(monthly_counts)
