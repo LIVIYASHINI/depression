@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from textblob import TextBlob
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import re
 
 # Set page config first
@@ -49,13 +50,18 @@ def preprocess_text(text):
     text = re.sub(r"[^a-zA-Z\s]", "", text)  # Remove non-alphabetic characters
     return text.lower().strip()
 
+def get_sentiment_vader(text):
+    """Sentiment analysis using VADER."""
+    score = analyzer.polarity_scores(text)
+    return score['compound']  # Returns a score between -1 and 1
+
 def enhanced_prediction(text):
     """Enhanced prediction using sentiment analysis and keywords"""
     # Preprocess the text
     text = preprocess_text(text)
-    
-    # Step 1: Sentiment Analysis using TextBlob
-    sentiment = TextBlob(text).sentiment.polarity
+
+    # Step 1: Sentiment Analysis using VADER
+    sentiment = get_sentiment_vader(text)
     if sentiment > 0.4:
         return 0  # Positive sentiment, Predict Not Depressed
     elif sentiment < -0.4:
@@ -66,11 +72,12 @@ def enhanced_prediction(text):
         return 1  # Depressed
     elif any(word in text for word in non_depression_keywords):
         return 0  # Not Depressed
-    
+
     # Step 3: Use model for final prediction if no clear sentiment or keyword match
     vectorized_text = vectorizer.transform([text])
     model_prediction = depression_model.predict(vectorized_text)
     return model_prediction[0]  # Return model prediction
+
 
 
 # Upload Text for Prediction
