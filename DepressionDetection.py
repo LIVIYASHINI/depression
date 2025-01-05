@@ -50,19 +50,28 @@ def preprocess_text(text):
     return text.lower().strip()
 
 def enhanced_prediction(text):
-    text = text.lower()
-    # Check for depression or non-depression keywords
+    """Enhanced prediction using sentiment analysis and keywords"""
+    # Preprocess the text
+    text = preprocess_text(text)
+    
+    # Step 1: Sentiment Analysis using TextBlob
+    sentiment = TextBlob(text).sentiment.polarity
+    if sentiment > 0.4:
+        return 0  # Positive sentiment, Predict Not Depressed
+    elif sentiment < -0.4:
+        return 1  # Negative sentiment, Predict Depressed
+
+    # Step 2: Check for depression or non-depression keywords
     if any(word in text for word in depression_keywords):
         return 1  # Depressed
     elif any(word in text for word in non_depression_keywords):
         return 0  # Not Depressed
-    else:
-        # Use sentiment analysis if no clear keyword match
-        sentiment = TextBlob(text).sentiment.polarity
-        # Vectorize text for model prediction
-        vectorized_text = vectorizer.transform([text])
-        model_prediction = depression_model.predict(vectorized_text)
-        return model_prediction[0]  # Return prediction from the model
+    
+    # Step 3: Use model for final prediction if no clear sentiment or keyword match
+    vectorized_text = vectorizer.transform([text])
+    model_prediction = depression_model.predict(vectorized_text)
+    return model_prediction[0]  # Return model prediction
+
 
 # Upload Text for Prediction
 st.header("1. Predict Depression Status :speech_balloon:")
