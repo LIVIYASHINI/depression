@@ -21,7 +21,7 @@ def load_model(model_path):
         st.error(f"Error loading model: {e}")
         return None
 # Load the saved depression model and vectorizer
-depression_model_path = 'depression_model_rf.sav'
+depression_model_path = 'depression_model_randomforest.sav'
 vectorizer_path = 'vectorizer.sav'
 depression_model = load_model(depression_model_path)
 vectorizer = load_model(vectorizer_path)
