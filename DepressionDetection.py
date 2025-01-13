@@ -45,7 +45,7 @@ st.markdown(
 
 # Updated keywords
 depression_keywords = ["sad", "depressed", "hopeless", "down", "anxious", "crying", "empty", "worthless", "fatigue", "tired", "lost"]
-non_depression_keywords = ["happy", "excited", "love", "great", "joyful", "content", "hopeful", "peaceful", "energized", "live"]
+non_depression_keywords = ["happy", "excited", "love", "great", "joyful", "content", "hopeful", "peaceful", "energized", "live", "badminton"]
 
 def preprocess_text(text):
     """Preprocess text by removing URLs and unwanted characters."""
